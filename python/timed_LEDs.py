@@ -12,7 +12,7 @@ LED_COUNT       = 741
 LED_PIN         = 18                    # GPIO18 is actually pin 12
 LED_FREQ        = 800000
 LED_DMA         = 5
-LED_BRIGHTNESS  = 127  
+LED_BRIGHTNESS  = 127
 LED_INVERT      = False
 LED_CHANNEL     = 0
 LED_STRIP       = ws.WS2812_STRIP       # Specific LED strip we have
@@ -21,18 +21,13 @@ LED_STRIP       = ws.WS2812_STRIP       # Specific LED strip we have
 POOL_X_VALUES = [0, 16.5, 21, 75]
 POOL_Y_VALUES = [4, 5, 6.5, 8]
 
-def start_LEDs(numLaps, lapTimeSec, lapTimeMs):
+def start_LEDs(lap_times):
     print("start_LEDs")
     # Create Object
     strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
     strip.begin()
-    
-    timing_array = []
-    
-    for _ in range(int(numLaps)):
-        timing_array.append(int(lapTimeSec))
-    
-    led_timing(strip, int(numLaps), timing_array, True)
+
+    led_timing(strip, lap_times.length, lap_times, True)
 
 '''
 Performs LED timing algorithm
@@ -59,16 +54,16 @@ def led_timing(strip, numLaps, lapTimes, debug = False):
         diagonal_length.append(math.sqrt(x_diff ** 2 + y_diff ** 2))
         total_horizontal_length += x_diff
         total_diagonal_length += math.sqrt(x_diff ** 2 + y_diff ** 2)
-        
+
     # Calculate number of LEDs in each section
     led_in_section = []
     for i in range(len(diagonal_length)):
         led_in_section.append(LED_COUNT * diagonal_length[i]/total_diagonal_length)
-    
+
     # Execute laps
     for n in range(numLaps):
         start = time.time()
-        
+
         # Set starting point in LED strip
         if n % 2 == 0:
             total_led_num = 0
@@ -87,7 +82,7 @@ def led_timing(strip, numLaps, lapTimes, debug = False):
                     time.sleep(2*(float(time_in_section)/led_in_section[i]))
                     strip.setPixelColor(total_led_num, Color(0,0,0))
                     total_led_num += 2
-            
+
             # For odd laps, turn on every other LED in descending order
             else:
                 for j in range(int(led_in_section[i]), -2, -2):
@@ -98,17 +93,17 @@ def led_timing(strip, numLaps, lapTimes, debug = False):
                     total_led_num -= 2
 
         end = time.time()
-        
+
         if debug:
             print(end - start)
             print(lapTimes[n])
 
-# Main program 
+# Main program
 if __name__ == '__main__':
 
     print("main")
     # Create Object
     strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
     strip.begin()
-    
+
     led_timing(strip, 2, [15, 20], True)
