@@ -1,3 +1,4 @@
+import json
 import bluetooth
 import timed_LEDs
 
@@ -13,10 +14,8 @@ print("Accepted connection from ", address)
 
 while True:
     data = client_socket.recv(1024)
-    data = data.decode().split(" ")
+    data = json.load(data.decode())
 
-    numLaps, timeSec, timeMs = data[0], data[1], data[2]
+    timed_LEDs.start_LEDs(data)
 
-
-    timed_LEDs.start_LEDs(numLaps, timeSec, timeMs)
 client_socket.close()
