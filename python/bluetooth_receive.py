@@ -14,8 +14,8 @@ print("Accepted connection from ", address)
 
 while True:
     data = client_socket.recv(1024)
-    data = json.load(data.decode())
+    data = json.loads(data.decode())
 
-    timed_LEDs.start_LEDs(data)
+    timed_LEDs.start_LEDs(int(data["delay"]), data["lap_times"])
 
 client_socket.close()

@@ -8,7 +8,7 @@ import time
 SCALER = 4.5
 
 # LED Strip Config - Object params
-LED_COUNT       = 741
+LED_COUNT       = 737
 LED_PIN         = 18                    # GPIO18 is actually pin 12
 LED_FREQ        = 800000
 LED_DMA         = 5
@@ -21,13 +21,16 @@ LED_STRIP       = ws.WS2812_STRIP       # Specific LED strip we have
 POOL_X_VALUES = [0, 16.5, 21, 75]
 POOL_Y_VALUES = [4, 5, 6.5, 8]
 
-def start_LEDs(lap_times):
+def start_LEDs(delay, lap_times):
     print("start_LEDs")
     # Create Object
     strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
     strip.begin()
+    time.sleep(delay)
+    led_timing(strip, len(lap_times), lap_times, True)
 
-    led_timing(strip, lap_times.length, lap_times, True)
+def sleep_strip:
+    strip.show()
 
 '''
 Performs LED timing algorithm
