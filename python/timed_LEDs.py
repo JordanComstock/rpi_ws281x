@@ -29,7 +29,7 @@ def start_LEDs(delay, lap_times):
     time.sleep(delay)
     led_timing(strip, len(lap_times), lap_times, True)
 
-def sleep_strip:
+def sleep_strip():
     strip.show()
 
 '''
@@ -40,6 +40,7 @@ numLaps: Number of laps (lap is length of pool in one direction)
 lapTimes: Array of lap times
 '''
 def led_timing(strip, numLaps, lapTimes, debug = False):
+    print(lapTimes)
     # Check for invalid input
     if numLaps != len(lapTimes):
         print("Number of laps does not match lap time list")
